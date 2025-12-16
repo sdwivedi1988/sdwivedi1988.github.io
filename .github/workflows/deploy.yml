@@ -1,5 +1,11 @@
 name: Build and deploy to GitHub Pages
 
+# Give the workflow token permission to write repository contents and pages
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
 on:
   push:
     branches:
@@ -11,16 +17,19 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # ensure the checkout step leaves credentials so the action can push back
+          persist-credentials: true
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          
-      - name: Install dependencies
-        run: npm install
+          # remove cache if you don't have a lockfile. Add cache: 'npm' only if package-lock.json is present.
+          # cache: 'npm'
 
       - name: Install dependencies
+        # use npm ci if you commit a package-lock.json; otherwise use npm install
         run: npm ci
 
       - name: Build
