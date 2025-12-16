@@ -27,7 +27,9 @@ jobs:
           node-version: '20'
           # remove cache if you don't have a lockfile. Add cache: 'npm' only if package-lock.json is present.
           # cache: 'npm'
-
+      - name: Install dependencies
+        run: npm install
+        
       - name: Install dependencies
         # use npm ci if you commit a package-lock.json; otherwise use npm install
         run: npm ci
